@@ -6,12 +6,14 @@ import datetime
 class Events:
     """Class for callback from GUI."""
 
-    def __init__(self, weather=''):
-        now = datetime.datetime.now()
-        self.date = now.strftime("%d_%m_%Y")
+    def __init__(self, weather='', suffix=''):
+        self.suffix = suffix
         self.weather = weather
 
     def __call__(self, text, feeling):
-        note = Note(text, feeling, self.weather)
-        storage = Storage({self.date: note})
-        storage.save(name="data/" + self.date + '.txt')
+        now = datetime.datetime.now()
+        time = now.strftime('%H:%M')
+        date = now.strftime('%d_%m_%Y')
+        note = Note(text, feeling, self.weather, time)
+        storage = Storage({date: note})
+        storage.save(name="data/" + date + self.suffix + '.txt')
