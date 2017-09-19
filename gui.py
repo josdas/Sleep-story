@@ -3,9 +3,12 @@ from PyQt5.QtWidgets import (QWidget, QSlider, QVBoxLayout,
                              QPushButton, QGroupBox, QTextEdit,
                              QGridLayout, QLabel, QMessageBox)
 import datetime
+import abc
 
 
 class BaseWindow(QWidget):
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self, events, h, w):
         super().__init__()
         self.events = events
@@ -23,10 +26,11 @@ class BaseWindow(QWidget):
     def _save(self):
         self.events(self.text_edit.toPlainText(), self.slide_feeling.value())
 
+    @abc.abstractmethod
     def _create_grid_layout(self):
         pass
 
-    def _closeEvent(self, event):
+    def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Quit',
                                      "Are you sure to quit?",
                                      QMessageBox.Yes,
